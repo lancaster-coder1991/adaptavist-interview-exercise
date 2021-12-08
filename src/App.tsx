@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Result } from './components/Result'
+import { prepareWordDictionary } from './utils/utils'
+import { WordEntries } from "./types/types";
 import './App.css';
 
-interface WordEntries {
-  [key: string]: number
-}
+
 
 function App() {
   const [inputWords, setInputWords] = useState<string>("")
@@ -19,33 +19,22 @@ function App() {
     setInputWords(currentWords)
   }
 
-  const renderResults = ():any => {
-    const inputWordsArray: string[] = inputWords.split(/\s+/g);
-    
-    const inputWordsDictionary: WordEntries = {}
-
-    inputWordsArray.forEach((word: string) => {
-      let wordToFind = word as keyof typeof inputWordsDictionary
-      if(inputWordsDictionary[wordToFind]) inputWordsDictionary[wordToFind]++
-      else inputWordsDictionary[wordToFind] = 1
-    })
+  const setResults = ():void => {
+    const inputWordsDictionary: WordEntries = prepareWordDictionary(inputWords)
 
     const resultElementArray: JSX.Element[] = []
     
     for(const word in inputWordsDictionary) {
-      resultElementArray.push(<Result word={word} count={inputWordsDictionary[word]}></Result>)
+      resultElementArray.push(<Result word={word} count={inputWordsDictionary[word]} key={resultElementArray.length}></Result>)
     }
 
-    // const resultElementArray: JSX.Element[] = inputWordsArray.map((word: string, index: number) => {
-    //   return <Result word={word}></Result>
-    // })
     setResultWords(resultElementArray)
   }
 
   return (
     <div className="App">
       <textarea id="main-text=area" onChange={(event) => handleWordInput(event)}></textarea>
-      <button id="confirm-button" onClick={renderResults}>GO!</button>
+      <button id="confirm-button" onClick={setResults}>GO!</button>
       <div id="results">{resultWords}</div>
     </div>
   );
