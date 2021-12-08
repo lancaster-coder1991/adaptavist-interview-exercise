@@ -8,15 +8,15 @@ import './App.css';
 function App() {
   const [inputWords, setInputWords] = useState<string[]>([])
   const [resultWords, setResultWords] = useState<JSX.Element[]>([])
-  const [sorting, setSorting] = useState<string>("alphabetically")
+  const [sorting, setSorting] = useState<string>("Alphabetically")
 
-  // useEffect(() => {
-  // console.log(inputWords);
-  // }, [inputWords]);
+  useEffect(() => {
+    setResults()
+  }, [sorting]);
 
   const handleWordInput = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const currentWords: string = event.target.value
-    const currentWordsArray: string[] = currentWords.split(/\s+/g).sort();
+    const currentWordsArray: string[] = currentWords.split(/\s+/g);
     setInputWords(currentWordsArray)
   }
 
@@ -31,6 +31,7 @@ function App() {
   }
 
   const handleSorting = (event: React.ChangeEvent<HTMLSelectElement>):void => {
+    console.log(event.target.value)
     setSorting(event.target.value)
     setResults()
   }
