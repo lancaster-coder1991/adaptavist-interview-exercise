@@ -1,15 +1,25 @@
 import { WordEntries } from "../types/types";
 
-export const prepareWordDictionary = (inputWords: string) => {
-  const inputWordsArray: string[] = inputWords.split(/\s+/g);
-
-  const inputWordsDictionary: WordEntries = {};
+export const prepareWordDictionary = (
+  inputWordsArray: string[],
+  sorting: string
+) => {
+  const inputWordsDictionary: { word: string; count: number }[] = [];
 
   inputWordsArray.forEach((word: string) => {
-    let wordToFind = word as keyof typeof inputWordsDictionary;
-    if (inputWordsDictionary[wordToFind]) inputWordsDictionary[wordToFind]++;
-    else inputWordsDictionary[wordToFind] = 1;
+    const indexOfWordInDictionary = inputWordsDictionary.findIndex(
+      (dictionaryEntry) => dictionaryEntry.word === word
+    );
+
+    if (indexOfWordInDictionary >= 0)
+      inputWordsDictionary[indexOfWordInDictionary].count++;
+    else inputWordsDictionary.push({ word: word, count: 1 });
   });
 
-  return inputWordsDictionary;
+  const sortedWordDictionary =
+    sorting === "Alphabetically"
+      ? inputWordsDictionary.sort((a, b) => (a.word > b.word ? 1 : -1))
+      : inputWordsDictionary.sort((a, b) => b.count - a.count);
+
+  return sortedWordDictionary;
 };
