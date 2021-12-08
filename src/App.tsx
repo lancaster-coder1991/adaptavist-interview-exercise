@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Result } from './components/Result'
-import { prepareWordDictionary } from './utils/utils'
-import { WordEntries } from "./types/types";
 import './App.css';
 
+type DictionaryEntry = { word: string; count: number }
+type InputWordsDictionary = DictionaryEntry[]
 
 function App() {
   const [inputWords, setInputWords] = useState<string[]>([])
@@ -21,27 +21,45 @@ function App() {
   }
 
   const setResults = ():void => {
-    const inputWordsDictionary: { word: string; count: number }[] = prepareWordDictionary(inputWords, sorting)
+    const inputWordsDictionary: InputWordsDictionary = prepareWordDictionary(inputWords, sorting)
 
-    const resultElementArray = inputWordsDictionary.map(({word, count}, index) => {
+    const resultElementArray = inputWordsDictionary.map(({word, count}: DictionaryEntry, index) => {
       return <Result word={word} count={count} key={index}></Result>
     })
 
     setResultWords(resultElementArray)
   }
 
-  const handleSorting = (event: React.ChangeEvent<HTMLSelectElement>):void => {
-    console.log(event.target.value)
-    setSorting(event.target.value)
-    setResults()
-  }
+  const prepareWordDictionary = (
+  inputWordsArray: string[],
+  sorting: string
+  ): InputWordsDictionary => {
+  const inputWordsDictionary: InputWordsDictionary = [];
+
+  inputWordsArray.forEach((word: string) => {
+    const indexOfWordInDictionary: number = inputWordsDictionary.findIndex(
+      (dictionaryEntry) => dictionaryEntry.word === word
+    );
+
+    if (indexOfWordInDictionary >= 0)
+      inputWordsDictionary[indexOfWordInDictionary].count++;
+    else inputWordsDictionary.push({ word: word, count: 1 });
+  });
+
+  const sortedWordDictionary: InputWordsDictionary =
+    sorting === "Alphabetically"
+      ? inputWordsDictionary.sort((a: DictionaryEntry, b: DictionaryEntry) => (a.word > b.word ? 1 : -1))
+      : inputWordsDictionary.sort((a: DictionaryEntry, b: DictionaryEntry) => b.count - a.count);
+
+  return sortedWordDictionary;
+};
 
   return (
     <div className="App">
       <textarea id="main-text=area" onChange={(event) => handleWordInput(event)}></textarea>
       <button id="confirm-button" onClick={setResults}>GO!</button>
       {/* only make this select visible after first search */}
-      <select onChange={(event) => handleSorting(event)}>
+      <select onChange={(event) => setSorting(event.target.value)}>
         <option>Alphabetically</option>
         <option>Count</option>
       </select>
