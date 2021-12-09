@@ -16,11 +16,12 @@ function App() {
 
   const handleWordInput = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const currentWords: string = event.target.value
-    const currentWordsArray: string[] = currentWords.split(/\s+/g);
+    const currentWordsArray: string[] = currentWords.split(/\s+/g).filter(str => str);
     setInputWords(currentWordsArray)
   }
 
   const setResults = ():void => {
+    console.log(inputWords)
     const inputWordsDictionary: InputWordsDictionary = prepareWordDictionary(inputWords, sorting)
 
     const resultElementArray = inputWordsDictionary.map(({word, count}: DictionaryEntry, index) => {
@@ -56,13 +57,16 @@ function App() {
 
   return (
     <div className="App">
-      <textarea id="main-text=area" onChange={(event) => handleWordInput(event)}></textarea>
-      <button id="confirm-button" onClick={setResults}>GO!</button>
+      <h2>Enter some lovely text below</h2>
+      <textarea id="main-text-area" onChange={(event) => handleWordInput(event)}></textarea>
       {/* only make this select visible after first search */}
-      <select onChange={(event) => setSorting(event.target.value)}>
-        <option>Alphabetically</option>
-        <option>Count</option>
-      </select>
+      <label id="sorting-select-label">Choose your sorting:  
+        <select id="sorting-select" onChange={(event) => setSorting(event.target.value)}>
+          <option>Alphabetically</option>
+          <option>Count</option>
+        </select>
+      </label>
+      <button id="confirm-button" onClick={setResults}>Click me for your word breakdown</button>
       <div id="results">{resultWords}</div>
     </div>
   );
