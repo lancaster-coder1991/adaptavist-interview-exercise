@@ -1,4 +1,4 @@
-import React from 'react';
+import './Result.css'
 
 type props = {
     word: string
@@ -7,8 +7,6 @@ type props = {
 
 export function Result({word, count}: props) {
     return (
-        <div id="ResultWrapper">
-            <div>{word}: {count}</div>
-        </div>
+        <div className="Result">{word}: {count}</div>
     )
 }

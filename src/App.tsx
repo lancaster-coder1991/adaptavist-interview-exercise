@@ -56,19 +56,37 @@ function App() {
 };
 
   return (
-    <div className="App">
-      <h2>Enter some lovely text below</h2>
-      <textarea id="main-text-area" onChange={(event) => handleWordInput(event)}></textarea>
-      {/* only make this select visible after first search */}
-      <label id="sorting-select-label">Choose your sorting:  
-        <select id="sorting-select" onChange={(event) => setSorting(event.target.value)}>
-          <option>Alphabetically</option>
-          <option>Count</option>
-        </select>
-      </label>
-      <button id="confirm-button" onClick={setResults}>Click me for your word breakdown</button>
-      <div id="results">{resultWords}</div>
-    </div>
+    <>
+      <div className="context">
+        <div className="App">
+          <h2 id="title">Enter some lovely text below</h2>
+          <textarea id="main-text-area" onChange={(event) => handleWordInput(event)}></textarea>
+          {/* only make this select visible after first search */}
+          <label id="sorting-select-label">Choose your sorting:  
+            <select id="sorting-select" onChange={(event) => setSorting(event.target.value)}>
+              <option>Alphabetically</option>
+              <option>Count</option>
+            </select>
+          </label>
+          <button id="confirm-button" onClick={setResults}>Click me for your word breakdown</button>
+          <div id="results">{resultWords}</div>
+        </div>
+      </div>
+      <div className="area" >
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div >
+    </>
   );
 }
 
