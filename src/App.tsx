@@ -61,7 +61,6 @@ function App() {
         <div className="App">
           <h2 id="title">Enter some lovely text below</h2>
           <textarea id="main-text-area" onChange={(event) => handleWordInput(event)}></textarea>
-          {/* only make this select visible after first search */}
           <label id="sorting-select-label">Choose your sorting:  
             <select id="sorting-select" onChange={(event) => setSorting(event.target.value)}>
               <option>Alphabetically</option>
